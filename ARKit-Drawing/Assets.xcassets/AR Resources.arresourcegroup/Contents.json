@@ -4,6 +4,11 @@
     "author" : "xcode"
   },
   "resources" : [
-
+    {
+      "filename" : "IMG_3518.arreferenceimage"
+    },
+    {
+      "filename" : "IMG_3519.arreferenceimage"
+    }
   ]
 }
