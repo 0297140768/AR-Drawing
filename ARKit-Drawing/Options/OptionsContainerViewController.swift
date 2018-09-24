@@ -109,7 +109,7 @@ class OptionsContainerViewController: UIViewController, UINavigationControllerDe
     }
     
     private func sizePicker() -> UIViewController {
-        let sizes: [Size] = [.small, .medium, .large]
+        let sizes: [Size] = [.small, .medium, .large, .extraLarge]
         let options = sizes.map { Option(option: $0, showsDisclosureIndicator: false) }
         
         let selector = OptionSelectorViewController(options: options)

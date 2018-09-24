@@ -4,6 +4,10 @@ import ARKit
 
 class ViewController: UIViewController, ARSCNViewDelegate {
 
+    var selectedNode: SCNNode?
+    var placedNodes: [SCNNode] = []
+    var planeNodes: [SCNNode] = []
+    
     @IBOutlet var sceneView: ARSCNView!
     let configuration = ARWorldTrackingConfiguration()
     
@@ -11,7 +15,11 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         case freeform, plane, image
     }
     
-    var objectMode: ObjectPlacementMode = .freeform
+    var objectMode: ObjectPlacementMode = .freeform {
+        didSet {
+            reloadCofiguration()
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,6 +30,11 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        reloadCofiguration()
+    }
+    
+    func reloadCofiguration() {
+        configuration.detectionImages = (objectMode == .image) ? ARReferenceImage.referenceImages(inGroupNamed: "AR Resources", bundle: nil) : nil
         sceneView.session.run(configuration)
     }
     
@@ -49,12 +62,70 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             optionsViewController.delegate = self
         }
     }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        
+        guard let node = selectedNode,
+            let touch = touches.first else { return }
+        
+        switch objectMode {
+        case .freeform:
+            addNodeInFront(node)
+        case .image:
+            break
+        case .plane:
+            break
+        }
+    }
+    
+    func addNodeInFront(_ node: SCNNode) {
+        guard let currentFrame = sceneView.session.currentFrame else { return }
+        var translation  = matrix_identity_float4x4
+        translation.columns.3.z = -0.2
+        node.simdTransform = matrix_multiply(currentFrame.camera.transform, translation)
+        
+        
+        addNodeToSceneRoot(node)
+    }
+    
+    func addNodeToSceneRoot(_ node: SCNNode) {
+        let cloneNode = node.clone()
+        sceneView.scene.rootNode.addChildNode(cloneNode)
+        placedNodes.append(cloneNode)
+    }
+    
+    func addNode(_ node: SCNNode, toImageUsingParentNode parentNode: SCNNode) {
+        let cloneNode = node.clone()
+        parentNode.addChildNode(cloneNode)
+        placedNodes.append(cloneNode)
+    }
+    
+    func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
+        
+        if let imageAnchor = anchor as? ARImageAnchor {
+            nodeAdded(node, anchor: imageAnchor)
+        } else if let planeAnchor = anchor as? ARPlaneAnchor {
+            nodeAdded(node, anchor: planeAnchor)
+        }
+    }
+    
+    func nodeAdded(_ node: SCNNode, anchor: ARImageAnchor) {
+        if let selectedNode = selectedNode {
+            addNode(node, toImageUsingParentNode: selectedNode)
+        }
+    }
+    
+    func nodeAdded(_ node: SCNNode, anchor: ARPlaneAnchor) {
+        
+    }
 }
 
 extension ViewController: OptionsViewControllerDelegate {
     
     func objectSelected(node: SCNNode) {
         dismiss(animated: true, completion: nil)
+        selectedNode = node
     }
     
     func togglePlaneVisualization() {
