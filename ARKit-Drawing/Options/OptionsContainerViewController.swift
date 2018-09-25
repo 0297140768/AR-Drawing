@@ -97,7 +97,7 @@ class OptionsContainerViewController: UIViewController, UINavigationControllerDe
     }
     
     private func colorPicker() -> UIViewController {
-        let colors: [(String, UIColor)] = [("Red", .red), ("Yellow", .yellow), ("Orange", .orange), ("Green", .green), ("Blue", .blue), ("Brown", .brown), ("White", .white), ("Black", .black)]
+        let colors: [(String, UIColor)] = [("Red", .red), ("Yellow", .yellow), ("Orange", .orange), ("Green", .green), ("Blue", .blue), ("Brown", .brown), ("White", .white), ("Black", .black), ("Magenta", .magenta)]
         let options = colors.map { Option(name: $0.0, option: $0.1, showsDisclosureIndicator: true) }
         
         let selector = OptionSelectorViewController(options: options)
