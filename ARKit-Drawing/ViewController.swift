@@ -5,9 +5,25 @@ import ARKit
 class ViewController: UIViewController, ARSCNViewDelegate {
 
     var selectedNode: SCNNode?
-    var placedNodes: [SCNNode] = []
+    var placedNodes: [SCNNode] = [] {
+        didSet {
+            nodesCounter.text = "Nodes on scene: \(placedNodes.count)"
+        }
+    }
     var planeNodes: [SCNNode] = []
+    var lastObjectPlacedPoint: CGPoint?
+    let touchDistanceThreshold: CGFloat = 40
     
+    var showPlaneOverlay = false {
+        didSet {
+            planeNodes.forEach { node in
+                node.isHidden = !showPlaneOverlay
+            }
+        }
+    }
+    
+    
+    @IBOutlet weak var nodesCounter: UILabel!
     @IBOutlet var sceneView: ARSCNView!
     let configuration = ARWorldTrackingConfiguration()
     
@@ -34,6 +50,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     }
     
     func reloadCofiguration() {
+        configuration.planeDetection = [.horizontal, .vertical]
         configuration.detectionImages = (objectMode == .image) ? ARReferenceImage.referenceImages(inGroupNamed: "AR Resources", bundle: nil) : nil
         sceneView.session.run(configuration)
     }
@@ -75,8 +92,34 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         case .image:
             break
         case .plane:
-            break
+            let touchPoint = touch.location(in: sceneView)
+            addNode(node, toPlaneUsingPoint: touchPoint)
         }
+    }
+    
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesMoved(touches, with: event)
+        
+        guard objectMode == .plane,
+        let node = selectedNode,
+        let touch = touches.first,
+        let lastTouchpoint = lastObjectPlacedPoint
+        else { return }
+        
+        let newTouchPoint = touch.location(in: sceneView)
+        
+        let a = newTouchPoint.x - lastTouchpoint.x
+        let b = newTouchPoint.y - lastTouchpoint.y
+        let distance = sqrt(a * a + b * b)
+        
+        if touchDistanceThreshold < distance {
+            addNode(node, toPlaneUsingPoint: newTouchPoint)
+        }
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesMoved(touches, with: event)
+        lastObjectPlacedPoint = nil
     }
     
     func addNodeInFront(_ node: SCNNode) {
@@ -88,6 +131,17 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         node.simdTransform = matrix_multiply(currentFrame.camera.transform, translation)
         
         addNodeToSceneRoot(node)
+    }
+    
+    func addNode(_ node: SCNNode, toPlaneUsingPoint point: CGPoint) {
+        let result = sceneView.hitTest(point, types: [.existingPlaneUsingExtent])
+        
+        if let match = result.first {
+            let position = match.worldTransform.columns.3
+            node.position = SCNVector3(x: position.x, y: position.y, z: position.z)
+            addNodeToSceneRoot(node)
+            lastObjectPlacedPoint = point
+        }
     }
     
     func addNodeToSceneRoot(_ node: SCNNode) {
@@ -111,14 +165,42 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         }
     }
     
+    func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {
+        guard let planeAnchor = anchor as? ARPlaneAnchor,
+        let planeNode = node.childNodes.first,
+        let geometry = planeNode.geometry as? SCNPlane
+        else { return }
+        
+        planeNode.position = SCNVector3(planeAnchor.center.x, 0, planeAnchor.center.z)
+        geometry.width = CGFloat(planeAnchor.extent.x)
+        geometry.height = CGFloat(planeAnchor.extent.z)
+        
+    }
+    
     func nodeAdded(_ node: SCNNode, anchor: ARImageAnchor) {
         if let selectedNode = selectedNode {
-            addNode(node, toImageUsingParentNode: selectedNode)
+            addNode(selectedNode, toImageUsingParentNode: node)
         }
     }
     
     func nodeAdded(_ node: SCNNode, anchor: ARPlaneAnchor) {
+        let floor = createFloor(planeAnchor: anchor)
+        floor.isHidden = !showPlaneOverlay
+        node.addChildNode(floor)
+        planeNodes.append(floor)
+    }
+    
+    func createFloor(planeAnchor: ARPlaneAnchor) -> SCNNode {
+        let width = CGFloat(planeAnchor.extent.x)
+        let height = CGFloat(planeAnchor.extent.z)
+        let geometry = SCNPlane(width: width, height: height)
         
+        let node = SCNNode(geometry: geometry)
+        
+        node.eulerAngles.x = -.pi / 2
+        node.opacity = 0.25
+        
+        return node
     }
 }
 
@@ -131,13 +213,34 @@ extension ViewController: OptionsViewControllerDelegate {
     
     func togglePlaneVisualization() {
         dismiss(animated: true, completion: nil)
+        showPlaneOverlay = !showPlaneOverlay
+
     }
     
     func undoLastObject() {
-        
+        if let lastNode = placedNodes.last {
+            lastNode.removeFromParentNode()
+            placedNodes.removeLast()
+        }
     }
     
     func resetScene() {
         dismiss(animated: true, completion: nil)
+        
+        planeNodes.forEach { node in
+            node.removeFromParentNode()
+        }
+        
+        planeNodes.removeAll()
+        
+        placedNodes.forEach { node in
+            node.removeFromParentNode()
+        }
+        
+        placedNodes.removeAll()
+
+        selectedNode = nil
+        
+        reloadCofiguration()
     }
 }

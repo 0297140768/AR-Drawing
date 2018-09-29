@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14087.3" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BV1-FR-VrT">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BV1-FR-VrT">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14075.4"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -64,16 +64,14 @@
                                     <rect key="frame" x="0.0" y="0.0" width="158" height="29"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <visualEffectView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RAH-ye-saP">
+                                        <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RAH-ye-saP">
                                             <rect key="frame" x="0.0" y="0.0" width="158" height="29"/>
-                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" insetsLayoutMarginsFromSafeArea="NO" id="Ldw-TI-gOS">
+                                            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="Ldw-TI-gOS">
                                                 <rect key="frame" x="0.0" y="0.0" width="158" height="29"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
-                                                    <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" apportionsSegmentWidthsByContent="YES" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="jVE-nl-i8i">
+                                                    <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" apportionsSegmentWidthsByContent="YES" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="jVE-nl-i8i">
                                                         <rect key="frame" x="0.0" y="0.0" width="160" height="29"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                         <segments>
                                                             <segment title="Freeform"/>
                                                             <segment title="Plane"/>
@@ -85,12 +83,24 @@
                                                         </connections>
                                                     </segmentedControl>
                                                 </subviews>
+                                                <constraints>
+                                                    <constraint firstAttribute="trailing" secondItem="jVE-nl-i8i" secondAttribute="trailing" constant="-2" id="NSp-xe-TVI"/>
+                                                    <constraint firstItem="jVE-nl-i8i" firstAttribute="leading" secondItem="Ldw-TI-gOS" secondAttribute="leading" id="XKB-m5-p7Y"/>
+                                                    <constraint firstItem="jVE-nl-i8i" firstAttribute="top" secondItem="Ldw-TI-gOS" secondAttribute="top" id="cYo-x3-gl2"/>
+                                                    <constraint firstAttribute="bottom" secondItem="jVE-nl-i8i" secondAttribute="bottom" constant="1" id="fnQ-XL-1Ji"/>
+                                                </constraints>
                                             </view>
                                             <vibrancyEffect>
                                                 <blurEffect style="light"/>
                                             </vibrancyEffect>
                                         </visualEffectView>
                                     </subviews>
+                                    <constraints>
+                                        <constraint firstItem="RAH-ye-saP" firstAttribute="top" secondItem="KaD-5l-R64" secondAttribute="top" id="0nn-Oc-mod"/>
+                                        <constraint firstItem="RAH-ye-saP" firstAttribute="leading" secondItem="KaD-5l-R64" secondAttribute="leading" id="9RO-en-hdK"/>
+                                        <constraint firstAttribute="bottom" secondItem="RAH-ye-saP" secondAttribute="bottom" id="XMv-5b-SfT"/>
+                                        <constraint firstAttribute="trailing" secondItem="RAH-ye-saP" secondAttribute="trailing" id="YoE-fk-I9Z"/>
+                                    </constraints>
                                 </view>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="158" id="5d0-eI-fhj"/>
@@ -103,21 +113,55 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </visualEffectView>
+                            <visualEffectView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lKn-YZ-Dcf">
+                                <rect key="frame" x="16" y="572" width="158" height="30"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="2ex-Rq-e7e">
+                                    <rect key="frame" x="0.0" y="0.0" width="158" height="30"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nodes on scene: 0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="nmL-9d-AlJ">
+                                            <rect key="frame" x="0.0" y="0.0" width="158" height="30"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="nmL-9d-AlJ" firstAttribute="top" secondItem="2ex-Rq-e7e" secondAttribute="top" id="ETP-w8-RK8"/>
+                                        <constraint firstAttribute="bottom" secondItem="nmL-9d-AlJ" secondAttribute="bottom" id="L7s-1m-rdy"/>
+                                        <constraint firstAttribute="trailing" secondItem="nmL-9d-AlJ" secondAttribute="trailing" id="kky-dG-zTf"/>
+                                        <constraint firstItem="nmL-9d-AlJ" firstAttribute="leading" secondItem="2ex-Rq-e7e" secondAttribute="leading" id="qq5-Dl-sIH"/>
+                                    </constraints>
+                                </view>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="D4T-ub-dfe"/>
+                                </constraints>
+                                <blurEffect style="light"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </visualEffectView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="RK5-mG-jKn" firstAttribute="top" secondItem="lKn-YZ-Dcf" secondAttribute="bottom" constant="16" id="7wV-QU-SBc"/>
                             <constraint firstItem="ZCE-wD-2E2" firstAttribute="trailing" secondItem="Hss-D4-YVK" secondAttribute="trailing" id="9BF-a4-DTs"/>
                             <constraint firstItem="ZCE-wD-2E2" firstAttribute="bottom" secondItem="Hss-D4-YVK" secondAttribute="bottom" id="9oE-EN-HGn"/>
                             <constraint firstItem="ZCE-wD-2E2" firstAttribute="bottom" secondItem="nGv-ui-K4i" secondAttribute="bottom" constant="20" id="EI9-ck-jaV"/>
+                            <constraint firstItem="lKn-YZ-Dcf" firstAttribute="leading" secondItem="RK5-mG-jKn" secondAttribute="leading" id="ESS-FK-peJ"/>
                             <constraint firstItem="Hss-D4-YVK" firstAttribute="top" secondItem="ZCE-wD-2E2" secondAttribute="top" id="OgV-19-dSa"/>
                             <constraint firstItem="ZCE-wD-2E2" firstAttribute="bottom" secondItem="RK5-mG-jKn" secondAttribute="bottom" constant="20" id="Pfd-Nb-YUs"/>
                             <constraint firstItem="RK5-mG-jKn" firstAttribute="leading" secondItem="ZCE-wD-2E2" secondAttribute="leading" constant="16" id="SnR-GG-ypT"/>
+                            <constraint firstItem="lKn-YZ-Dcf" firstAttribute="trailing" secondItem="RK5-mG-jKn" secondAttribute="trailing" id="Srw-MW-7oQ"/>
                             <constraint firstItem="ZCE-wD-2E2" firstAttribute="trailing" secondItem="nGv-ui-K4i" secondAttribute="trailing" constant="17" id="i2L-km-UXq"/>
                             <constraint firstItem="Hss-D4-YVK" firstAttribute="leading" secondItem="ZCE-wD-2E2" secondAttribute="leading" id="tq9-FB-eeV"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="ZCE-wD-2E2"/>
                     </view>
                     <connections>
+                        <outlet property="nodesCounter" destination="nmL-9d-AlJ" id="fxg-PQ-IVG"/>
                         <outlet property="sceneView" destination="Hss-D4-YVK" id="9bm-dS-QB2"/>
                     </connections>
                 </viewController>

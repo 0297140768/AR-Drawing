@@ -22,7 +22,6 @@ class OptionsContainerViewController: UIViewController, UINavigationControllerDe
         
         let navigationController = UINavigationController(rootViewController: rootOptionPicker())
         nav = navigationController
-        
         transition(to: navigationController)
     }
     
